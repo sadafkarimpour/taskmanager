@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-class Task extends CI_Controller{
+class Task extends MY_Controller{
 
 	public function __construct()
 	{
@@ -20,6 +20,9 @@ class Task extends CI_Controller{
 			`password` varchar(255) NOT NULL,
 			`name` varchar(255) NOT NULL,
 			`lastname` varchar(255) NOT NULL
+			
+			
+
 		)";
 		$this->db->query($tbl);
 		$this->db->close();
@@ -82,30 +85,38 @@ class Task extends CI_Controller{
 		
 	}
 
-
 	/**
 	 * This index() function, to display my task list page.
 	 *
 	 * @return void
 	 */
-	public function taskIndex()
+	public function taskindex()
 	{
 		$this->UserTable();
 		$this->TaskTable();
 		$this->TaskUserTable();
 		$this->load->view("header");
 		$path="http://localhost/Taskmanager/";
+
+		$this->load->model('User_model');
+
+		$userid = $_SESSION["id"];
+
+		$groups=$this->User_model->groupofid($userid);
+		
 		$data=[
 			'PATH'=>$path,
 			'SiteurlLogin'=>$path."Task/login",
 			'SiteurlRegister'=>$path."Task/register",
 			'SiteurlTask'=>$path."Task/task",
 			'SiteurlLogout'=>$path."Task/logout",
+			'userid'=>$userid,
+			'groups'=> $groups,
 
 		];
 		$this->load->helper('url');
 		$this->load->view("menu",$data);
-		$this->load->view("Index",$data);
+		$this->load->view("tastindex",$data);
 		$this->load->view("footer");
 		
 	}
@@ -120,8 +131,6 @@ class Task extends CI_Controller{
 	public function login()
 	{
 		$this->UserTable();
-		$this->TaskTable();
-		$this->TaskUserTable();
 		$this->load->view("header");
 		$path="http://localhost/Taskmanager/";
 		$data=[
@@ -146,11 +155,13 @@ class Task extends CI_Controller{
 	public function doLogin()
 	{
 		$this->UserTable();
-		$this->TaskTable();
-		$this->TaskUserTable();
+		
 
 		$username=$this->input->post('username');
 		$password=$this->input->post('password');  
+	
+
+	
 	
 		$this->load->model('User_model');
 		$result=$this->User_model->login($username, $password);
@@ -161,12 +172,11 @@ class Task extends CI_Controller{
 			]);
 			return;
 		}
-	
+
 		echo json_encode([
 			'statusCode'=>201
 		]);
 	}
-
 
 	
 	/**
@@ -177,8 +187,7 @@ class Task extends CI_Controller{
 	public function register()
 	{
 		$this->UserTable();
-		$this->TaskTable();
-		$this->TaskUserTable();
+		
 		$this->load->view("header");
 		$path="http://localhost/Taskmanager/";
 		$data=[

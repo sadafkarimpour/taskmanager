@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-class Task extends CI_Model{
+class Task_model extends CI_Model{
 
 
 	/**
@@ -71,6 +71,40 @@ class Task extends CI_Model{
 	public $status;
 
 
+
+	public static function Taskitems(){
+		$c = &get_instance();
+		$c->load->database();
+		$tasks=[];
+		$result = $c->db->query("SELECT * FROM `Task`");
+		$total=$result->num_rows();
+		if($total>0){
+			foreach ($result->result() as $row)
+		{
+
+			log_message("debug", "row: \n" . print_r($row, true));
+		
+                $task = new Task_model();
+			
+                $task->id = $row->id;
+			 $task->datetime=$row->datetime;
+			 $task->id_user=$row->id_user;
+			 $task->description=$row->description;
+			 $task->priority=$row->priority;
+			 $task->status=$row->status;
+			 $task->datetime_deadline=$row->datetime_deadline;
+
+              
+                $tasks[] = $task;
+           
+		
+			}
+		}
+		return $tasks;
+
+
+
+	}
 
 }
 

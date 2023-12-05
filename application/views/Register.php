@@ -1,5 +1,5 @@
 <!-- Register Form -->
-<form id="App" class="container bg-dark p-5 text-center rounded" style="margin-top: 100px;width:550px">
+<form id="App" class="container bg-dark p-5 text-center rounded" style="margin-top: 70px;width:550px">
 	<div class="row form-group m-1 p-1 w-100">
 			<h3 class="text-light">Register Form</h3>
 	</div>
@@ -15,7 +15,8 @@
   <div class="row form-group pt-3 m-1  w-100">
     <input v-model="lastname" type="text" class="col form-control p-2" id="exampleInputlastname" placeholder="LastName">
   </div>
-  
+ 
+
   <button type="button" class="row btn btn-primary w-25 p-2 mt-3" @click="doregister()">Register</button>
   <div class="row form-group pt-3 m-1  w-100">
 	<small id="" class="col col-lg-6 col-md-6 col-sm-6form-text text-muted">Have you registered?</small>
@@ -34,7 +35,8 @@
 			password:'',
 			name:'',
 			lastname:'',
-
+		
+			
 		}
 	},
 

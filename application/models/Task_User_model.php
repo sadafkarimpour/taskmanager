@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-class Task_User extends CI_Model{
+class Task_User_model extends CI_Model{
 
 
 	/**
