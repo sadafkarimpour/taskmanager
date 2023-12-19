@@ -73,10 +73,11 @@ class Task_model extends CI_Model{
 
 
 	public static function Taskitems(){
+		
 		$c = &get_instance();
 		$c->load->database();
 		$tasks=[];
-		$result = $c->db->query("SELECT * FROM `Task`");
+		$result = $c->db->query("SELECT * FROM `Task` ORDER BY `id` DESC");
 		$total=$result->num_rows();
 		if($total>0){
 			foreach ($result->result() as $row)
@@ -84,26 +85,69 @@ class Task_model extends CI_Model{
 
 			log_message("debug", "row: \n" . print_r($row, true));
 		
-                $task = new Task_model();
-			
-                $task->id = $row->id;
-			 $task->datetime=$row->datetime;
-			 $task->id_user=$row->id_user;
-			 $task->description=$row->description;
-			 $task->priority=$row->priority;
-			 $task->status=$row->status;
-			 $task->datetime_deadline=$row->datetime_deadline;
+			$task = new Task_model();
+		
+			$task->id = $row->id;
+			$task->datetime=$row->datetime;
+			$task->id_user=$row->id_user;
+			$task->description=$row->description;
+			$task->priority=$row->priority;
+			$task->status=$row->status;
+			$task->datetime_deadline=$row->datetime_deadline;
 
-              
-                $tasks[] = $task;
+			
+			$tasks[] = $task;
            
 		
-			}
 		}
-		return $tasks;
+	}
+	return $tasks;
 
 
 
+	}
+
+	public function Save($description,$priority,$status){
+		$c = &get_instance();
+		$c->load->database();
+		$result = $c->db->query("INSERT INTO `Task` ( `description`, `priority`, `status`) VALUES ('$description','$priority','$status')");
+ 
+	    if($result){
+		   return array("statusCode"=>200);
+	    }
+	    else{
+		   return array("statusCode"=>201);
+	    
+	    }
+	}
+
+	public function Saveedit($editid,$description,$priority,$status){
+		$c = &get_instance();
+		$c->load->database();
+		$result = $c->db->query("UPDATE `Task` SET  description='$description', priority='$priority', status='$status'  WHERE id='$editid' ");
+ 
+	    if($result){
+		   return array("statusCode"=>200);
+	    }
+	    else{
+		   return array("statusCode"=>201);
+	    
+	    }
+	}
+
+
+	public function delete($deletedid){
+		$c = &get_instance();
+		$c->load->database();
+		$result = $c->db->query("DELETE FROM `Task` WHERE id='$deletedid'");
+ 
+	    if($result){
+		   return array("statusCode"=>200);
+	    }
+	    else{
+		   return array("statusCode"=>201);
+	    
+	    }
 	}
 
 }

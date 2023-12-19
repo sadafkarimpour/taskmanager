@@ -242,8 +242,15 @@ class Task extends MY_Controller{
 	 * @return void
 	 */
 	public function search()
-	{
+	{	
+		$this->load->model('Task_model');
+		$result = $this->Task_model->Taskitems();
+		if($result){
+			echo json_encode($result);
+			return;
+		}
 
+		echo json_encode([]);
 	}
 
 	/**
@@ -276,7 +283,75 @@ class Task extends MY_Controller{
 	public function save()
 	{
 
+		$this->TaskTable();
+		
 
+		$description=$this->input->post('description');
+		$priority=$this->input->post('priority');
+		$status=$this->input->post('status');
+
+		$d = $this->load->model('Task_model');
+		$result=$this->Task_model->Save($description,$priority,$status);
+
+		if($result){
+			echo json_encode([
+				'statusCode'=>200
+			]);
+			return;
+		}
+
+		echo json_encode([
+			'statusCode'=>201
+		]);
+	}
+
+	public function Saveedit()
+	{
+
+		$this->TaskTable();
+		
+        $editid=$this->input->post('editid');
+		$description=$this->input->post('description');
+		$priority=$this->input->post('priority');
+		$status=$this->input->post('status');
+
+		$d = $this->load->model('Task_model');
+		$result=$this->Task_model->Saveedit($editid,$description,$priority,$status);
+
+		if($result){
+			echo json_encode([
+				'statusCode'=>200
+			]);
+			return;
+		}
+
+		echo json_encode([
+			'statusCode'=>201
+		]);
+	}
+
+
+	public function delete()
+	{
+
+		$this->TaskTable();
+		
+
+		$deletedid=$this->input->post('deletedid');
+
+		$d = $this->load->model('Task_model');
+		$result=$this->Task_model->delete($deletedid);
+
+		if($result){
+			echo json_encode([
+				'statusCode'=>200
+			]);
+			return;
+		}
+
+		echo json_encode([
+			'statusCode'=>201
+		]);
 	}
 
 

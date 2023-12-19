@@ -1,5 +1,5 @@
 <!-- Register Form -->
-<form id="App" class="container bg-dark p-5 text-center rounded" style="margin-top: 70px;width:550px">
+<form id="App" class="container bg-light p-5 text-center rounded" style="width:600px;--bs-bg-opacity: .2;">
 	<div class="row form-group m-1 p-1 w-100">
 			<h3 class="text-light">Register Form</h3>
 	</div>
@@ -19,7 +19,7 @@
 
   <button type="button" class="row btn btn-primary w-25 p-2 mt-3" @click="doregister()">Register</button>
   <div class="row form-group pt-3 m-1  w-100">
-	<small id="" class="col col-lg-6 col-md-6 col-sm-6form-text text-muted">Have you registered?</small>
+	<small id="" class="col col-lg-6 col-md-6 col-sm-6form-text text-light">Have you registered?</small>
     <a class="col col-lg-6 col-md-6 col-sm-6  " href="<?php echo $SiteurlRegister?>"><small id="" class="form-text text-primary">Click to Login!</small></a>
 	</div>
 </form>
