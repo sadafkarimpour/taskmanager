@@ -43,10 +43,11 @@
 							<td  class="border border-light" v-if="view2"  v-html="task.status"></td>
 
 							<td  class="border border-light" v-else>
-							<i class="fa fa-eye text-light" aria-hidden="true"></i>
-								<button type="button" class="btn btn-primary text-white p-2 m-1" @click="View(task)" style="width:80px ;">	<i class="fa fa-eye" aria-hidden="true"></i></button>						
-								<button type="button" class="btn btn-primary p-2 m-1" @click="referral()" style="width:80px ;">referral</button>						
+								<!-- <button type="button" class="btn btn-primary text-white p-2 m-1" @click="View(task)" style="width:40px;"><i class="fa fa-camera-retro fa-lg" style="font-size:20px;"></i></button>						 -->
+								<button type="button" class="btn btn-primary text-white p-2 m-1" @click="View(task)" style="width:80px;">View</button>						
+								<button type="button" class="btn btn-primary p-2 m-1"  @click="referral(task)" data-toggle="modal" data-target="#referralModal"  style="width:80px ;">referral</button>						
 							</td>
+						
 							<td  class="border border-light"  v-if="view2">
 								<button type="button" class="btn btn-primary p-2 m-1" @click="edit()" style="width:80px ;">Edit</button>						
 								<button type="button" class="btn btn-primary p-2 m-1" @click="deletee()" style="width:80px ;">Delete</button>	
@@ -168,6 +169,37 @@
 
 <!-- Task form -->
 
+
+<!-- referral form -->
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="referralModal" tabindex="-1" role="dialog" aria-labelledby="referralModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content border-0 bg-dark text-center p-3 rounded">
+      <div class="modal-header border-0">
+        <h5 class="modal-title border-0 text-white" id="referralModalLabel">Referral form</h5>
+        <button type="button" class="close border-0 bg-secondary text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body border-0" v-for="task in tasks" :key="task.id">
+        <div class="text-white" v-if="task.id==referralid" v-html="task.id">
+
+		</div>
+      </div>
+      <div class="modal-footer-centered border-0">
+        <button type="button" class="btn btn-secondary w-25 p-2 m-3" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary w-25 p-2 m-3">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- referral form -->
+
 </div>
 
 
@@ -185,6 +217,8 @@
 			view2:false,
 			viewid:"",
 		    editing:false,
+			referralid:"",
+			
 			
 
 
@@ -321,7 +355,12 @@
 					
 				},
 			})
+		},
+		referral(task){
+			this.referralid=task.id
+
 		}
+		
 	}
 }).mount('#app');
 </script>
