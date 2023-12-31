@@ -53,8 +53,21 @@ class Task_User_model extends CI_Model{
 
 
 
+	
 
-
+	public function SaveRef($userid,$referralid,$id_userref,$datedeadline){
+		$c = &get_instance();
+		$c->load->database();
+		$result = $c->db->query("INSERT INTO `TaskUser` ( `id_user`, `id_task`, `id_user_ref` , `datetime`) VALUES ('$userid','$referralid','$id_userref','$datedeadline') ");
+ 
+	    if($result){
+		   return array("statusCode"=>200);
+	    }
+	    else{
+		   return array("statusCode"=>201);
+	    
+	    }
+	}
 
 }
 

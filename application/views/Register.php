@@ -61,7 +61,7 @@
 				success:(dataResult)=>{
 					var data = JSON.parse(dataResult);
 					if(data.statusCode==200){
-						Swal.fire("Registeration successfuly.");
+						// Swal.fire("Registerastion successfuly.");
 						location.href = "<?php echo $PATH ?>Task/login";
 					}
 					else if(data.statusCode==201){

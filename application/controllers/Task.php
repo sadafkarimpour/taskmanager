@@ -50,7 +50,6 @@ class Task extends MY_Controller{
 			`id_user` int(255) NOT NULL ,
 			`id_task` int(255) NOT NULL ,
 			`id_user_ref` int(255) NOT NULL,
-			`phone_number` varchar(255) NOT NULL,
 			`datetime` datetime NOT NULL
 		)";
 		$this->db->query($tbl);
@@ -355,15 +354,35 @@ class Task extends MY_Controller{
 	}
 
 
+
 	/**
 	 * This function receives the ID of the task and the ID of the user 
 	 * and refers that task to the user and returns the result of the references as json.
 	 *
 	 * @return void
 	 */
-	public function Ref($id_task,$id_user)
+	public function SaveRef()
 	{
+		$this->TaskTable();
+		
+        $userid=$this->input->post('userid');
+		$referralid=$this->input->post('referralid');
+		$id_userref=$this->input->post('id_userref');
+		$datedeadline=$this->input->post('datedeadline');
 
+		$d = $this->load->model('Task_User_model');
+		$result=$this->Task_User_model->SaveRef($userid,$referralid,$id_userref,$datedeadline);
+
+		if($result){
+			echo json_encode([
+				'statusCode'=>200
+			]);
+			return;
+		}
+
+		echo json_encode([
+			'statusCode'=>201
+		]);
 	}
 
 	/**

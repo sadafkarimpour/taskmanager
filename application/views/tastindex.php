@@ -45,7 +45,9 @@
 							<td  class="border border-light" v-else>
 								<!-- <button type="button" class="btn btn-primary text-white p-2 m-1" @click="View(task)" style="width:40px;"><i class="fa fa-camera-retro fa-lg" style="font-size:20px;"></i></button>						 -->
 								<button type="button" class="btn btn-primary text-white p-2 m-1" @click="View(task)" style="width:80px;">View</button>						
-								<button type="button" class="btn btn-primary p-2 m-1"  @click="referral(task)" data-toggle="modal" data-target="#referralModal"  style="width:80px ;">referral</button>						
+								<button type="button" class="btn btn-primary p-2 m-1"  @click="referral(task)" data-toggle="modal" data-target="#referralModal"  style="width:80px ;">referral</button>	
+								<!-- <button type="button" class="btn btn-primary text-white p-2 m-1" @click="ViewRef(task)" style="width:80px;">ViewRef</button>						 -->
+					
 							</td>
 						
 							<td  class="border border-light"  v-if="view2">
@@ -135,9 +137,6 @@
 					<div class="row form-group m-1 w-100">
 						<textarea v-model="Description" class="col form-control p-2" name="Description" id="Description" cols="30" s="10" placeholder="Enter Description"></textarea>
 					</div>
-					<!-- <div class=" form-group pt-3 m-1  w-100">
-						<input v-model="datedeadline" type="date" class="col form-control p-2" id="exampleInputdatedead" >
-					</div> -->
 					<div  class="row form-group pt-3 m-1  w-100 tex-dark">
 						<select v-model="priority">
 							<option disabled value="-2">Please select priority.</option>
@@ -175,7 +174,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="referralModal" tabindex="-1" role="dialog" aria-labelledby="referralModalLabel" aria-hidden="true">
+
+<div class="modal fade"  id="referralModal" tabindex="-1" role="dialog" aria-labelledby="referralModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content border-0 bg-dark text-center p-3 rounded">
       <div class="modal-header border-0">
@@ -184,14 +184,47 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body border-0" v-for="task in tasks" :key="task.id">
-        <div class="text-white" v-if="task.id==referralid" v-html="task.id">
+      <div class="modal-body border-0">
+	  		<table  class="table table-dark border border-dark col striped hover text-light text-center" >
+				<thead>
+					<tr>
+					<th class="border border-light" >Task id</th>
+					<th class="border border-light" >datetime</th>
+					<th class="border border-light" >Description</th>
+					<th class="border border-light" >priority</th>
+					<th class="border border-light" >status</th>
+					</tr>
+				</thead>
+				<tbody>
+				<tr v-for="task in tasks" :key="task.id" v-show="task.id==referralid">
+							<td  class="border border-light"  v-html="task.id"></td>
+				
+							<td  class="border border-light" v-html="task.datetime"></td>
 
-		</div>
+							<td  class="border border-light"  v-html="task.description"></td>
+							
+							<td  class="border border-light"  v-html="task.priority"></td>
+							
+							<td  class="border border-light"  v-html="task.status"></td>
+							
+					</tr>
+				</tbody>
+	 		</table>
+			<select v-model="id_userref"  class="p-1 m-1 w-100">
+				<option disabled value="-1">Please select user id.</option>
+				
+				<option v-for="group in groups" value="" v-html="group.id">
+					
+				</option>
+			</select>
+			<div class=" form-group pt-3 m-1 w-100">
+				<p class="text-muted text-start">please select deadline date for this task.</p>
+				<input v-model="datedeadline" type="date" class="col form-control p-2" id="exampleInputdatedead" >
+			</div>
       </div>
       <div class="modal-footer-centered border-0">
         <button type="button" class="btn btn-secondary w-25 p-2 m-3" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary w-25 p-2 m-3">Save</button>
+        <button type="button" class="btn btn-primary w-25 p-2 m-3" @click="SaveRef()">Save</button>
       </div>
     </div>
   </div>
@@ -215,9 +248,13 @@
 			groups: <?php echo json_encode($groups) ?>,
 			view:true,
 			view2:false,
-			viewid:"",
+			viewid:'',
 		    editing:false,
-			referralid:"",
+			referralid:'',
+			id_userref:'-1',
+			userid:<?php echo $userid ?>,
+			// saveref:false,
+		
 			
 			
 
@@ -358,9 +395,38 @@
 		},
 		referral(task){
 			this.referralid=task.id
+	},
+	SaveRef(){
+		let url="<?php echo $PATH?>Task/SaveRef";
+			$.ajax({
+				url:url,
+				type:"post",
+				data:{
+					userid:this.userid,
+					referralid:this.referralid,
+					id_userref:this.id_userref,
+					datedeadline:this.datedeadline,
+				},
+				cache:false,
+				success:(dataResult)=>{
+					var data = JSON.parse(dataResult);
+					if(data.statusCode==200){
+						// this.saveref=true,
+						Swal.fire("Task successfuly was referred");
+						location.href = "<?php echo $PATH ?>task/taskindex";	
+										
+					}
+					else if(daya.statusCode==201){
+						Swal.fire("something went wrong!");
 
-		}
-		
-	}
+					}
+					
+				},
+			})
+
+	},
+}
+
 }).mount('#app');
+
 </script>

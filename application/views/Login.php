@@ -45,7 +45,7 @@ Vue.createApp({
 		  success:(dataResult)=>{
 					var data = JSON.parse(dataResult);
 					if(data.statusCode==200){
-						Swal.fire("Login successfuly done.");
+						// Swal.fire("Login successfuly done.");
 						location.href = "<?php echo $PATH ?>task/taskindex";	
 										
 					}
